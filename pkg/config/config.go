@@ -61,8 +61,8 @@ func ReadCurrConfig() model.Config {
 	config := model.Config{}
 
 	if !fileUtils.FileExist(vari.ConfigFile) {
-		config.Language = "en"
-		i118Utils.InitI118("en")
+		config := model.NewConfig()
+		i118Utils.InitI118(config.Language)
 
 		return config
 	}

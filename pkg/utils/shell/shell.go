@@ -26,7 +26,9 @@ func ExeSysCmd(cmdStr string) (string, error) {
 
 	err := cmd.Run()
 
-	return out.String(), err
+	output := out.String()
+
+	return output, err
 }
 
 func GetPrecess(app string) (string, error) {
