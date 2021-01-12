@@ -1,0 +1,17 @@
+{
+  "language": "en-US",
+  "messages": [
+    {
+      "id": "usage",
+      "translation": "Usage:"
+    },
+    {
+      "id": "begin_config",
+      "translation": "Begin to config, type 'exit' to quit."
+    },
+    {
+      "id": "enter_language",
+      "translation": "1) 请选择您要使用的语言，中文请输入数字1。\n2) Please select the language. Input 2 for English."
+    }
+  ]
+}

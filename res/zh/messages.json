@@ -1,0 +1,17 @@
+{
+  "language": "zh",
+  "messages": [
+    {
+      "id": "usage",
+      "translation": "帮助："
+    },
+    {
+      "id": "begin_config",
+      "translation": "开始配置, 输入'exit'退出。"
+    },
+    {
+      "id": "enter_language",
+      "translation": "1) 请选择您要使用的语言，中文请输入数字1。\n2) Please select the language. Input 2 for English."
+    }
+  ]
+}
