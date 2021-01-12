@@ -5,7 +5,7 @@ import (
 )
 
 var (
-	Config = model.Config{ZTFVersion: 1, ZDVersion: 1, Language: "en"}
+	Config = model.NewConfig()
 
 	ExeDir     string
 	WorkDir    string

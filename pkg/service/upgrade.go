@@ -18,33 +18,48 @@ import (
 )
 
 func CheckUpgrade(app string) {
-	versionFile := vari.WorkDir + app + constant.PthSep + "version.txt"
+	appDir := vari.WorkDir + app + constant.PthSep
+	fileUtils.MkDirIfNeeded(appDir)
+
+	versionFile := appDir + "version.txt"
 	versionUrl := fmt.Sprintf(constant.VersionDownloadURL, app)
 	downloadUtils.Download(versionUrl, versionFile)
 
 	content := strings.TrimSpace(fileUtils.ReadFile(versionFile))
-	newVersion, _ := strconv.ParseFloat(content, 64)
-	if (app == constant.ZTF && vari.Config.ZTFVersion < newVersion) ||
-		(app == constant.ZenData && vari.Config.ZDVersion < newVersion) {
+	newVersionStr := convertVersion(content)
+	newVersionNum, _ := strconv.ParseFloat(newVersionStr, 64)
 
+	var oldVersionNum float64
+	if app == constant.ZTF {
+		oldVersionStr := convertVersion(vari.Config.ZTFVersion)
+		oldVersionNum, _ = strconv.ParseFloat(oldVersionStr, 64)
+	} else if app == constant.ZenData {
+		oldVersionStr := convertVersion(vari.Config.ZDVersion)
+		oldVersionNum, _ = strconv.ParseFloat(oldVersionStr, 64)
+	}
+
+	if oldVersionNum < newVersionNum {
 		log.Println(i118Utils.I118Prt.Sprintf("find_new_ver", content))
 
-		newVersionStr := fmt.Sprintf("%.1f", newVersion)
-		pass, err := downloadApp(app, newVersionStr)
+		pass, err := downloadApp(app, content)
 		if pass && err == nil {
-			restartApp(app, newVersionStr)
+			restartApp(app, content)
 		}
+	} else {
+		log.Println(i118Utils.I118Prt.Sprintf("no_need_to_upgrade", content))
 	}
 }
 
 func downloadApp(app string, version string) (pass bool, err error) {
+	appDir := vari.WorkDir + app + constant.PthSep
+
 	os := commonUtils.GetOs()
 	if commonUtils.IsWin() {
 		os = fmt.Sprintf("%s%d", os, strconv.IntSize)
 	}
 	url := fmt.Sprintf(constant.PackageDownloadURL, app, version, os, app)
 
-	extractDir := vari.WorkDir + app + constant.PthSep + version
+	extractDir := appDir + version
 
 	pth := extractDir + ".zip"
 	err = downloadUtils.Download(url, pth)
@@ -80,23 +95,25 @@ func downloadApp(app string, version string) (pass bool, err error) {
 }
 
 func restartApp(app string, newVersion string) (err error) {
-	currExePath := vari.ExeDir + constant.AppName
-	bakExePath := currExePath + "_bak"
-	newExePath := vari.WorkDir + newVersion + constant.PthSep + constant.AppName + constant.PthSep + constant.AppName
+	appDir := vari.WorkDir + app + constant.PthSep
+
+	newExePath := appDir + newVersion + constant.PthSep + app + constant.PthSep + app
 	if commonUtils.IsWin() {
-		currExePath += ".exe"
-		bakExePath += ".exe"
 		newExePath += ".exe"
 	}
 
-	var oldVersion float64
+	var oldVersion string
 	if app == constant.ZTF {
 		oldVersion = vari.Config.ZTFVersion
-		vari.Config.ZTFVersion, _ = strconv.ParseFloat(newVersion, 64)
+		vari.Config.ZTFVersion = newVersion
 	} else if app == constant.ZenData {
 		oldVersion = vari.Config.ZDVersion
-		vari.Config.ZTFVersion, _ = strconv.ParseFloat(newVersion, 64)
+		vari.Config.ZDVersion = newVersion
 	}
+
+	shellUtils.KillPrecess(app)
+	shellUtils.StartPrecess(newExePath, app)
+
 	log.Println(i118Utils.I118Prt.Sprintf("success_upgrade", oldVersion, newVersion))
 
 	// update config file
@@ -110,4 +127,13 @@ func checkMd5(filePth, md5Pth string) (pass bool) {
 	actualVal, _ := shellUtils.ExeSysCmd("md5sum " + filePth + " | awk '{print $1}'")
 
 	return strings.TrimSpace(actualVal) == strings.TrimSpace(expectVal)
+}
+
+func convertVersion(str string) string {
+	arr := strings.Split(str, ".")
+	if len(arr) > 2 { // ignore 3th
+		str = strings.Join(arr[:2], ".")
+	}
+
+	return str
 }

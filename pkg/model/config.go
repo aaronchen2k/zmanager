@@ -1,8 +1,8 @@
 package model
 
 type Config struct {
-	ZTFVersion float64
-	ZDVersion  float64
+	ZTFVersion string
+	ZDVersion  string
 
 	Interval int64
 	Language string

@@ -75,7 +75,6 @@ func ReadCurrConfig() model.Config {
 func getInst() model.Config {
 	CheckConfigReady()
 
-	vari.Config = model.NewConfig()
 	ini.MapTo(&vari.Config, vari.ConfigFile)
 
 	return vari.Config
