@@ -40,10 +40,10 @@ func (p *Program) run() error {
 		select {
 		case tm := <-ticker.C:
 			_ = tm
-			Logger.Warningf("Start to check ...")
+			Logger.Warningf("start to run.")
 
 			for _, app := range constant.Apps {
-				log.Printf("Start to check %s ...", app)
+				log.Printf("start to check %s.", app)
 
 				manageService.CheckUpgrade(app)
 				manageService.CheckStatus(app)
