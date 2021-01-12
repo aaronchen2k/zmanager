@@ -32,5 +32,5 @@ var (
 
 	ZTF     = "ztf"
 	ZenData = "zd"
-	Apps    = []string{ZTF}
+	Apps    = []string{ZTF, ZenData}
 )
