@@ -10,7 +10,9 @@ import (
 	"os/exec"
 	"path"
 	"path/filepath"
+	"regexp"
 	"strconv"
+	"strings"
 )
 
 func ExeSysCmd(cmdStr string) (string, error) {
@@ -37,8 +39,8 @@ func GetPrecess(app string) (string, error) {
 	tmpl := ""
 	cmdStr := ""
 	if commonUtils.IsWin() {
-		tmpl = `taskkill.exe /f /im %s.exe`
-		cmdStr = fmt.Sprintf(tmpl, app)
+		tmpl = `tasklist`
+		cmdStr = fmt.Sprintf(tmpl)
 
 		cmd = exec.Command("cmd", "/C", cmdStr)
 	} else {
@@ -52,7 +54,19 @@ func GetPrecess(app string) (string, error) {
 	cmd.Stdout = &out
 
 	err := cmd.Run()
-	output := out.String()
+	output := ""
+	if commonUtils.IsWin() {
+		arr := strings.Split(out.String(), "\n")
+		for _, line := range arr {
+			if strings.Index(line, app+".exe") > -1 {
+				arr2 := regexp.MustCompile(`\s+`).Split(line, -1)
+				output = arr2[1]
+				break
+			}
+		}
+	} else {
+		output = out.String()
+	}
 
 	return output, err
 }
@@ -99,13 +113,19 @@ func StartPrecess(execPath string, app string) (string, error) {
 	cmdStr := ""
 	var cmd *exec.Cmd
 	if commonUtils.IsWin() {
-		tmpl = `start /b %s -%s %d > %snohup.%s.log`
+		tmpl = `start %s -%s %d > %snohup.%s.log 2>&1`
 		cmdStr = fmt.Sprintf(tmpl, execPath, portTag, portNum, vari.WorkDir, app)
 
-		cmd = exec.Command(cmdStr)
+		cmd = exec.Command("cmd", "/C", cmdStr)
+
+		//log := filepath.Join(vari.WorkDir, "nohup."+app+".log")
+		//f, _ := os.Create(log)
+		//
+		//cmd.Stdout = f
+		//cmd.Stderr = f
+
 	} else {
 		cmd = exec.Command("nohup", execPath, "-"+portTag, strconv.Itoa(portNum))
-		cmd.Dir = path.Dir(execPath)
 
 		log := filepath.Join(vari.WorkDir, "nohup."+app+".log")
 		f, _ := os.Create(log)
@@ -114,6 +134,7 @@ func StartPrecess(execPath string, app string) (string, error) {
 		cmd.Stderr = f
 	}
 
+	cmd.Dir = path.Dir(execPath)
 	err := cmd.Start()
 	return "", err
 }
