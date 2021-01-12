@@ -29,6 +29,33 @@ func ExeSysCmd(cmdStr string) (string, error) {
 	return out.String(), err
 }
 
+func GetPrecess(app string) (string, error) {
+	var cmd *exec.Cmd
+
+	tmpl := ""
+	cmdStr := ""
+	if commonUtils.IsWin() {
+		tmpl = `taskkill.exe /f /im %s.exe`
+		cmdStr = fmt.Sprintf(tmpl, app)
+
+		cmd = exec.Command(cmdStr)
+		// cmd = exec.Command("cmd", "/C", cmdStr)
+	} else {
+		tmpl = `ps -ef | grep "%s" | grep -v "grep" | awk '{print $2}'`
+		cmdStr = fmt.Sprintf(tmpl, app)
+
+		cmd = exec.Command("/bin/bash", "-c", cmdStr)
+	}
+
+	var out bytes.Buffer
+	cmd.Stdout = &out
+
+	err := cmd.Run()
+	output := out.String()
+
+	return output, err
+}
+
 func KillPrecess(app string) (string, error) {
 	var cmd *exec.Cmd
 

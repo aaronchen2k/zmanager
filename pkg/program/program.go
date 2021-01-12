@@ -44,6 +44,7 @@ func (p *Program) run() error {
 
 			for _, app := range constant.Apps {
 				manageService.CheckUpgrade(app)
+				manageService.CheckStatus(app)
 			}
 
 		case <-p.exit:
