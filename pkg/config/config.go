@@ -12,7 +12,6 @@ import (
 	"gopkg.in/ini.v1"
 	"log"
 	"os"
-	"path"
 	"path/filepath"
 	"reflect"
 )
@@ -81,7 +80,7 @@ func getInst() model.Config {
 }
 
 func CheckConfigPermission() {
-	d := path.Dir(vari.LogFile)
+	d := filepath.Dir(vari.LogFile)
 	err := fileUtils.MkDirIfNeeded(d)
 	if err != nil {
 		log.Println(fmt.Sprintf("Permission denied, please change the dir %s.", d))

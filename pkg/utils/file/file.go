@@ -3,6 +3,8 @@ package fileUtils
 import (
 	"io/ioutil"
 	"os"
+	"path"
+	"path/filepath"
 	"regexp"
 	"strings"
 )
@@ -56,4 +58,27 @@ func RmDir(dir string) error {
 	}
 
 	return nil
+}
+
+func GetAbosutePath(pth string) string {
+	if !IsAbosutePath(pth) {
+		pth, _ = filepath.Abs(pth)
+	}
+
+	pth = AddSepIfNeeded(pth)
+
+	return pth
+}
+func IsAbosutePath(pth string) bool {
+	return path.IsAbs(pth) ||
+		strings.Index(pth, ":") == 1 // windows
+}
+
+func AddSepIfNeeded(pth string) string {
+	sepa := string(os.PathSeparator)
+
+	if strings.LastIndex(pth, sepa) < len(pth)-1 {
+		pth += sepa
+	}
+	return pth
 }

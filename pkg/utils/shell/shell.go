@@ -5,10 +5,10 @@ import (
 	"fmt"
 	commonUtils "github.com/easysoft/zmanager/pkg/utils/common"
 	constant "github.com/easysoft/zmanager/pkg/utils/const"
+	fileUtils "github.com/easysoft/zmanager/pkg/utils/file"
 	"github.com/easysoft/zmanager/pkg/utils/vari"
 	"os"
 	"os/exec"
-	"path"
 	"path/filepath"
 	"regexp"
 	"strconv"
@@ -99,6 +99,8 @@ func KillPrecess(app string) (string, error) {
 }
 
 func StartPrecess(execPath string, app string) (string, error) {
+	execDir := fileUtils.GetAbosutePath(filepath.Dir(execPath))
+
 	portTag := ""
 	portNum := 0
 	if app == constant.ZTF {
@@ -113,8 +115,13 @@ func StartPrecess(execPath string, app string) (string, error) {
 	cmdStr := ""
 	var cmd *exec.Cmd
 	if commonUtils.IsWin() {
-		tmpl = `start %s -%s %d > %snohup.%s.log 2>&1`
-		cmdStr = fmt.Sprintf(tmpl, execPath, portTag, portNum, vari.WorkDir, app)
+		if app == constant.ZTF {
+			tmpl = `start %s -%s %d > %snohup.%s.log 2>&1`
+			cmdStr = fmt.Sprintf(tmpl, execPath, portTag, portNum, vari.WorkDir, app)
+		} else if app == constant.ZenData { // set root for workdir
+			tmpl = `start %s -R %s -%s %d > %snohup.%s.log 2>&1`
+			cmdStr = fmt.Sprintf(tmpl, execPath, execDir, portTag, portNum, vari.WorkDir, app)
+		}
 
 		cmd = exec.Command("cmd", "/C", cmdStr)
 
@@ -125,7 +132,11 @@ func StartPrecess(execPath string, app string) (string, error) {
 		//cmd.Stderr = f
 
 	} else {
-		cmd = exec.Command("nohup", execPath, "-"+portTag, strconv.Itoa(portNum))
+		if app == constant.ZTF {
+			cmd = exec.Command("nohup", execPath, "-"+portTag, strconv.Itoa(portNum))
+		} else if app == constant.ZenData { // set root for workdir
+			cmd = exec.Command("nohup", execPath, "-R", execDir, "-"+portTag, strconv.Itoa(portNum))
+		}
 
 		log := filepath.Join(vari.WorkDir, "nohup."+app+".log")
 		f, _ := os.Create(log)
@@ -134,7 +145,7 @@ func StartPrecess(execPath string, app string) (string, error) {
 		cmd.Stderr = f
 	}
 
-	cmd.Dir = path.Dir(execPath)
+	cmd.Dir = execDir
 	err := cmd.Start()
 	return "", err
 }
