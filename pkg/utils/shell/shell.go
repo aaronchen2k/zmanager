@@ -16,7 +16,7 @@ import (
 func ExeSysCmd(cmdStr string) (string, error) {
 	var cmd *exec.Cmd
 	if commonUtils.IsWin() {
-		cmd = exec.Command(cmdStr)
+		cmd = exec.Command("cmd", "/C", cmdStr)
 	} else {
 		cmd = exec.Command("/bin/bash", "-c", cmdStr)
 	}
@@ -40,8 +40,7 @@ func GetPrecess(app string) (string, error) {
 		tmpl = `taskkill.exe /f /im %s.exe`
 		cmdStr = fmt.Sprintf(tmpl, app)
 
-		cmd = exec.Command(cmdStr)
-		// cmd = exec.Command("cmd", "/C", cmdStr)
+		cmd = exec.Command("cmd", "/C", cmdStr)
 	} else {
 		tmpl = `ps -ef | grep "%s" | grep -v "grep" | awk '{print $2}'`
 		cmdStr = fmt.Sprintf(tmpl, app)
@@ -64,11 +63,11 @@ func KillPrecess(app string) (string, error) {
 	tmpl := ""
 	cmdStr := ""
 	if commonUtils.IsWin() {
+		// tasklist | findstr ztf.exe
 		tmpl = `taskkill.exe /f /im %s.exe`
 		cmdStr = fmt.Sprintf(tmpl, app)
 
-		cmd = exec.Command(cmdStr)
-		// cmd = exec.Command("cmd", "/C", cmdStr)
+		cmd = exec.Command("cmd", "/C", cmdStr)
 	} else {
 		tmpl = `ps -ef | grep "%s" | grep -v "grep" | awk '{print $2}' | xargs kill -9`
 		cmdStr = fmt.Sprintf(tmpl, app)
@@ -100,11 +99,10 @@ func StartPrecess(execPath string, app string) (string, error) {
 	cmdStr := ""
 	var cmd *exec.Cmd
 	if commonUtils.IsWin() {
-		tmpl = `start /b %s.exe -%s %d > %s\%s`
+		tmpl = `start /b %s -%s %d > %snohup.%s.log`
 		cmdStr = fmt.Sprintf(tmpl, execPath, portTag, portNum, vari.WorkDir, app)
 
 		cmd = exec.Command(cmdStr)
-		// cmd = exec.Command("cmd", "/C", cmdStr)
 	} else {
 		cmd = exec.Command("nohup", execPath, "-"+portTag, strconv.Itoa(portNum))
 		cmd.Dir = path.Dir(execPath)

@@ -18,7 +18,7 @@ import (
 )
 
 func Init() {
-	vari.WorkDir = path.Join(commonUtils.GetUserHome(), constant.AppName) + constant.PthSep
+	vari.WorkDir = commonUtils.GetUserHome() + constant.PthSep + constant.AppName + constant.PthSep
 	vari.ConfigFile = vari.WorkDir + "conf.ini"
 	vari.LogFile = vari.WorkDir + constant.AppName + ".log"
 

@@ -55,7 +55,7 @@ func downloadApp(app string, version string) (pass bool, err error) {
 
 	os := commonUtils.GetOs()
 	if commonUtils.IsWin() {
-		os = fmt.Sprintf("%s%d", os, strconv.IntSize)
+		os = fmt.Sprintf("win%d", strconv.IntSize)
 	}
 	url := fmt.Sprintf(constant.PackageDownloadURL, app, version, os, app)
 
@@ -132,6 +132,12 @@ func checkMd5(filePth, md5Pth string) (pass bool) {
 		cmdStr = "md5sum " + filePth + " | awk '{print $1}'"
 	}
 	actualVal, _ := shellUtils.ExeSysCmd(cmdStr)
+	if commonUtils.IsWin() {
+		arr := strings.Split(actualVal, "\n")
+		if len(arr) > 1 {
+			actualVal = strings.TrimSpace(strings.Split(actualVal, "\n")[1])
+		}
+	}
 
 	return strings.TrimSpace(actualVal) == strings.TrimSpace(expectVal)
 }
