@@ -107,7 +107,7 @@ func StartPrecess(execPath string, app string) (string, error) {
 		cmd = exec.Command("nohup", execPath, "-"+portTag, strconv.Itoa(portNum))
 		cmd.Dir = path.Dir(execPath)
 
-		log := filepath.Join(vari.WorkDir, app+".nohup.log")
+		log := filepath.Join(vari.WorkDir, "nohup."+app+".log")
 		f, _ := os.Create(log)
 
 		cmd.Stdout = f

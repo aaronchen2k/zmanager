@@ -23,7 +23,7 @@
     },
     {
       "id": "success_upgrade",
-      "translation": "成功从版本%.1f升级到%s。"
+      "translation": "成功从版本%s升级到%s。"
     },
     {
       "id": "fail_upgrade",
