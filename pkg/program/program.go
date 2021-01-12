@@ -1,6 +1,8 @@
 package program
 
 import (
+	manageService "github.com/easysoft/zmanager/pkg/service"
+	constant "github.com/easysoft/zmanager/pkg/utils/const"
 	logUtils "github.com/easysoft/zmanager/pkg/utils/log"
 	"github.com/easysoft/zmanager/pkg/utils/vari"
 	"github.com/kardianos/service"
@@ -39,6 +41,11 @@ func (p *Program) run() error {
 		case tm := <-ticker.C:
 			Logger.Warningf("Still running at %v... - Logger", tm)
 			log.Printf("- Still running at %v... - log", tm)
+
+			for _, app := range constant.Apps {
+				manageService.CheckUpgrade(app)
+			}
+
 		case <-p.exit:
 			ticker.Stop()
 			return nil

@@ -24,9 +24,13 @@ var (
 
 	LogDir = fmt.Sprintf("log%s", string(os.PathSeparator))
 
-	ControlAction = []string{"start", "stop", "restart", "install", "uninstall"}
+	Actions = []string{"start", "stop", "restart", "install", "uninstall"}
 
 	QiNiuURL           = "https://dl.cnezsoft.com/"
 	VersionDownloadURL = QiNiuURL + "%s/version.txt"
 	PackageDownloadURL = QiNiuURL + "%s/%s/%s/%s.zip"
+
+	ZTF     = "ztf"
+	ZenData = "zd"
+	Apps    = []string{ZTF, ZenData}
 )

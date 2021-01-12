@@ -29,19 +29,19 @@ compile_all: compile_win64 compile_win32 compile_linux compile_mac
 
 compile_win64:
 	@echo 'start compile win64'
-	@CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -o ${BIN_WIN64}${BINARY}.exe cmd/zmanager.go
+	@CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -o ${BIN_WIN64}${BINARY}.exe cmd/main.go
 
 compile_win32:
 	@echo 'start compile win32'
-	@CGO_ENABLED=0 GOOS=windows GOARCH=386 go build -o ${BIN_WIN32}${BINARY}.exe cmd/zmanager.go
+	@CGO_ENABLED=0 GOOS=windows GOARCH=386 go build -o ${BIN_WIN32}${BINARY}.exe cmd/main.go
 
 compile_linux:
 	@echo 'start compile linux'
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o ${BIN_LINUX}${BINARY} cmd/zmanager.go
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o ${BIN_LINUX}${BINARY} cmd/main.go
 
 compile_mac:
 	@echo 'start compile mac'
-	@CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -o ${BIN_MAC}${BINARY} cmd/zmanager.go
+	@CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -o ${BIN_MAC}${BINARY} cmd/main.go
 
 copy_files:
 	@echo 'start copy files'

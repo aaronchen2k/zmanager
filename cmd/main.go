@@ -1,23 +1,25 @@
 package main
 
 import (
-	"flag"
 	configUtils "github.com/easysoft/zmanager/pkg/config"
 	"github.com/easysoft/zmanager/pkg/program"
 	commonUtils "github.com/easysoft/zmanager/pkg/utils/common"
 	constant "github.com/easysoft/zmanager/pkg/utils/const"
 	"github.com/kardianos/service"
 	"log"
+	"os"
 )
 
 func main() {
 	configUtils.Init()
 
-	svcFlag := flag.String("s", "", "")
-	flag.Parse()
+	action := ""
+	if len(os.Args) > 1 {
+		action = os.Args[1]
+	}
 
-	if *svcFlag != "" && commonUtils.StrInArr(*svcFlag, constant.ControlAction) {
-		log.Printf("Valid actions: %q\n", constant.ControlAction)
+	if action != "" && commonUtils.StrInArr(action, constant.Actions) {
+		log.Printf("Valid actions: %q\n", constant.Actions)
 	}
 
 	options := make(service.KeyValue)
@@ -53,14 +55,15 @@ func main() {
 		}
 	}()
 
-	if len(*svcFlag) != 0 {
-		err := service.Control(s, *svcFlag)
+	if action != "" {
+		err := service.Control(s, action)
 		if err != nil {
 			log.Printf("Valid actions: %q\n", service.ControlAction)
 			log.Fatal(err)
 		}
 		return
 	}
+
 	err = s.Run()
 	if err != nil {
 		program.Logger.Error(err)

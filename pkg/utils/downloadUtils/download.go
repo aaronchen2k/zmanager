@@ -1,4 +1,4 @@
-package download
+package downloadUtils
 
 import (
 	"archive/zip"

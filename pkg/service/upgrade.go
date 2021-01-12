@@ -1,4 +1,4 @@
-package service
+package manageService
 
 import (
 	"errors"
@@ -6,6 +6,7 @@ import (
 	configUtils "github.com/easysoft/zmanager/pkg/config"
 	commonUtils "github.com/easysoft/zmanager/pkg/utils/common"
 	constant "github.com/easysoft/zmanager/pkg/utils/const"
+	"github.com/easysoft/zmanager/pkg/utils/downloadUtils"
 	fileUtils "github.com/easysoft/zmanager/pkg/utils/file"
 	i118Utils "github.com/easysoft/zmanager/pkg/utils/i118"
 	shellUtils "github.com/easysoft/zmanager/pkg/utils/shell"
@@ -17,14 +18,14 @@ import (
 )
 
 func CheckUpgrade(app string) {
-	versionFile := vari.WorkDir + "version.txt"
+	versionFile := vari.WorkDir + app + constant.PthSep + "version.txt"
 	versionUrl := fmt.Sprintf(constant.VersionDownloadURL, app)
-	commonUtils.Download(versionUrl, versionFile)
+	downloadUtils.Download(versionUrl, versionFile)
 
 	content := strings.TrimSpace(fileUtils.ReadFile(versionFile))
 	newVersion, _ := strconv.ParseFloat(content, 64)
-	if (app == "ztf" && vari.Config.ZTFVersion < newVersion) ||
-		(app == "ztf" && vari.Config.ZDVersion < newVersion) {
+	if (app == constant.ZTF && vari.Config.ZTFVersion < newVersion) ||
+		(app == constant.ZenData && vari.Config.ZDVersion < newVersion) {
 
 		log.Println(i118Utils.I118Prt.Sprintf("find_new_ver", content))
 
@@ -43,17 +44,17 @@ func downloadApp(app string, version string) (pass bool, err error) {
 	}
 	url := fmt.Sprintf(constant.PackageDownloadURL, app, version, os, app)
 
-	dir := vari.WorkDir + version
+	extractDir := vari.WorkDir + app + constant.PthSep + version
 
-	pth := dir + ".zip"
-	err = commonUtils.Download(url, pth)
+	pth := extractDir + ".zip"
+	err = downloadUtils.Download(url, pth)
 	if err != nil {
 		return
 	}
 
 	md5Url := url + ".md5"
 	md5Pth := pth + ".md5"
-	err = commonUtils.Download(md5Url, md5Pth)
+	err = downloadUtils.Download(md5Url, md5Pth)
 	if err != nil {
 		return
 	}
@@ -66,9 +67,9 @@ func downloadApp(app string, version string) (pass bool, err error) {
 		return
 	}
 
-	fileUtils.RmDir(dir)
-	fileUtils.MkDirIfNeeded(dir)
-	err = archiver.Unarchive(pth, dir)
+	fileUtils.RmDir(extractDir)
+	fileUtils.MkDirIfNeeded(extractDir)
+	err = archiver.Unarchive(pth, extractDir)
 
 	if err != nil {
 		log.Println(i118Utils.I118Prt.Sprintf("fail_unzip", pth))
@@ -89,10 +90,10 @@ func restartApp(app string, newVersion string) (err error) {
 	}
 
 	var oldVersion float64
-	if app == "ztf" {
+	if app == constant.ZTF {
 		oldVersion = vari.Config.ZTFVersion
 		vari.Config.ZTFVersion, _ = strconv.ParseFloat(newVersion, 64)
-	} else if app == "zd" {
+	} else if app == constant.ZenData {
 		oldVersion = vari.Config.ZDVersion
 		vari.Config.ZTFVersion, _ = strconv.ParseFloat(newVersion, 64)
 	}
