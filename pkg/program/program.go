@@ -19,9 +19,9 @@ var Logger service.Logger
 
 func (p *Program) Start(s service.Service) error {
 	if service.Interactive() {
-		Logger.Info("Start in terminal.")
+		Logger.Info("zmanager run in terminal.")
 	} else {
-		Logger.Info("Start as service.")
+		Logger.Info("zmanager run as service.")
 	}
 	p.exit = make(chan struct{})
 
@@ -39,8 +39,9 @@ func (p *Program) run() error {
 	for {
 		select {
 		case tm := <-ticker.C:
-			Logger.Warningf("Still running at %v... - Logger", tm)
-			log.Printf("- Still running at %v... - log", tm)
+			_ = tm
+			Logger.Warningf("Start to check ... - Logger")
+			log.Printf("Start to check ... - log")
 
 			for _, app := range constant.Apps {
 				manageService.CheckUpgrade(app)
