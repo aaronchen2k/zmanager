@@ -124,7 +124,14 @@ func restartApp(app string, newVersion string) (err error) {
 
 func checkMd5(filePth, md5Pth string) (pass bool) {
 	expectVal := fileUtils.ReadFile(md5Pth)
-	actualVal, _ := shellUtils.ExeSysCmd("md5sum " + filePth + " | awk '{print $1}'")
+
+	cmdStr := ""
+	if commonUtils.IsWin() {
+		cmdStr = "CertUtil -hashfile " + filePth + " MD5"
+	} else {
+		cmdStr = "md5sum " + filePth + " | awk '{print $1}'"
+	}
+	actualVal, _ := shellUtils.ExeSysCmd(cmdStr)
 
 	return strings.TrimSpace(actualVal) == strings.TrimSpace(expectVal)
 }
