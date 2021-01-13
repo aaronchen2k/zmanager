@@ -69,11 +69,11 @@
     },
     {
       "id": "launch_in_terminal",
-      "translation": "ZManager在终端中启动。"
+      "translation": "从终端启动。"
     },
     {
       "id": "launch_in_service",
-      "translation": "ZManager在系统服务中启动。"
+      "translation": "从系统服务启动。"
     },
     {
       "id": "running",
