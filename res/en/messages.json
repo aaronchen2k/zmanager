@@ -78,11 +78,11 @@
     },
     {
       "id": "running",
-      "translation": "I'm running %v."
+      "translation": "I'm running on %v."
     },
     {
       "id": "stopping",
-      "translation": "I'm Stopping."
+      "translation": "I'm stopping."
     },
     {
       "id": "start_to_run",

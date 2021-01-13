@@ -77,7 +77,7 @@
     },
     {
       "id": "running",
-      "translation": "正在运行%v。"
+      "translation": "正在运行于%v。"
     },
     {
       "id": "stopping",
