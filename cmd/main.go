@@ -5,6 +5,7 @@ import (
 	"github.com/easysoft/zmanager/pkg/program"
 	commonUtils "github.com/easysoft/zmanager/pkg/utils/common"
 	constant "github.com/easysoft/zmanager/pkg/utils/const"
+	i118Utils "github.com/easysoft/zmanager/pkg/utils/i118"
 	"github.com/kardianos/service"
 	"log"
 	"os"
@@ -58,7 +59,7 @@ func main() {
 	if action != "" {
 		err := service.Control(s, action)
 		if err != nil {
-			log.Printf("Valid actions: %q\n", service.ControlAction)
+			log.Println(i118Utils.I118Prt.Sprintf("valid_actions", service.ControlAction))
 			log.Fatal(err)
 		}
 		return

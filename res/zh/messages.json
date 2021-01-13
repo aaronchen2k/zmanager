@@ -61,6 +61,31 @@
     {
       "id": "fail_md5_check",
       "translation": "验证文件%s的MD5失败。"
+    },
+
+    {
+      "id": "valid_actions",
+      "translation": "Valid actions: %q."
+    },
+    {
+      "id": "run_in_terminal",
+      "translation": "zmanager在终端中运行。"
+    },
+    {
+      "id": "run_in_service",
+      "translation": "zmanager在系统服务中运行。"
+    },
+    {
+      "id": "running",
+      "translation": "正在运行%v。"
+    },
+    {
+      "id": "stopping",
+      "translation": "正在停止。"
+    },
+    {
+      "id": "start_to_run",
+      "translation": "开始执行。"
     }
   ]
 }

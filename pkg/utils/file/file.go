@@ -60,8 +60,8 @@ func RmDir(dir string) error {
 	return nil
 }
 
-func GetAbosutePath(pth string) string {
-	if !IsAbosutePath(pth) {
+func GetAbsolutePath(pth string) string {
+	if !IsAbsolutePath(pth) {
 		pth, _ = filepath.Abs(pth)
 	}
 
@@ -69,7 +69,7 @@ func GetAbosutePath(pth string) string {
 
 	return pth
 }
-func IsAbosutePath(pth string) bool {
+func IsAbsolutePath(pth string) bool {
 	return path.IsAbs(pth) ||
 		strings.Index(pth, ":") == 1 // windows
 }

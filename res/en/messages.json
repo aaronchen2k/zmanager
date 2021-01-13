@@ -62,6 +62,31 @@
     {
       "id": "fail_md5_check",
       "translation": "Check file %s MD5 failed."
+    },
+
+    {
+      "id": "valid_actions",
+      "translation": "Valid actions: %q."
+    },
+    {
+      "id": "run_in_terminal",
+      "translation": "zmanager run in terminal."
+    },
+    {
+      "id": "run_in_service",
+      "translation": "zmanager run as service."
+    },
+    {
+      "id": "running",
+      "translation": "I'm running %v."
+    },
+    {
+      "id": "stopping",
+      "translation": "I'm Stopping."
+    },
+    {
+      "id": "start_to_run",
+      "translation": "start to run."
     }
   ]
 }

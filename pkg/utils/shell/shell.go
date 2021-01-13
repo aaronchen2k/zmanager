@@ -33,7 +33,7 @@ func ExeSysCmd(cmdStr string) (string, error) {
 	return output, err
 }
 
-func GetPrecess(app string) (string, error) {
+func GetProcess(app string) (string, error) {
 	var cmd *exec.Cmd
 
 	tmpl := ""
@@ -71,7 +71,7 @@ func GetPrecess(app string) (string, error) {
 	return output, err
 }
 
-func KillPrecess(app string) (string, error) {
+func KillProcess(app string) (string, error) {
 	var cmd *exec.Cmd
 
 	tmpl := ""
@@ -98,8 +98,8 @@ func KillPrecess(app string) (string, error) {
 	return output, err
 }
 
-func StartPrecess(execPath string, app string) (string, error) {
-	execDir := fileUtils.GetAbosutePath(filepath.Dir(execPath))
+func StartProcess(execPath string, app string) (string, error) {
+	execDir := fileUtils.GetAbsolutePath(filepath.Dir(execPath))
 
 	portTag := ""
 	portNum := 0
@@ -124,13 +124,6 @@ func StartPrecess(execPath string, app string) (string, error) {
 		}
 
 		cmd = exec.Command("cmd", "/C", cmdStr)
-		/*
-			log := filepath.Join(vari.WorkDir, "nohup."+app+".log")
-			f, _ := os.Create(log)
-
-			cmd.Stdout = f
-			cmd.Stderr = f
-		*/
 
 	} else {
 		if app == constant.ZTF {

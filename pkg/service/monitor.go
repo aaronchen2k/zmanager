@@ -9,7 +9,7 @@ import (
 )
 
 func CheckStatus(app string) {
-	output, _ := shellUtils.GetPrecess(app)
+	output, _ := shellUtils.GetProcess(app)
 	output = strings.TrimSpace(output)
 
 	if output != "" {
@@ -34,7 +34,7 @@ func startApp(app string, version string) (err error) {
 		newExePath += ".exe"
 	}
 
-	shellUtils.StartPrecess(newExePath, app)
+	shellUtils.StartProcess(newExePath, app)
 
 	return
 }

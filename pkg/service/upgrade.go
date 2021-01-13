@@ -6,7 +6,7 @@ import (
 	configUtils "github.com/easysoft/zmanager/pkg/config"
 	commonUtils "github.com/easysoft/zmanager/pkg/utils/common"
 	constant "github.com/easysoft/zmanager/pkg/utils/const"
-	"github.com/easysoft/zmanager/pkg/utils/downloadUtils"
+	"github.com/easysoft/zmanager/pkg/utils/download"
 	fileUtils "github.com/easysoft/zmanager/pkg/utils/file"
 	i118Utils "github.com/easysoft/zmanager/pkg/utils/i118"
 	shellUtils "github.com/easysoft/zmanager/pkg/utils/shell"
@@ -111,8 +111,8 @@ func restartApp(app string, newVersion string) (err error) {
 		vari.Config.ZDVersion = newVersion
 	}
 
-	shellUtils.KillPrecess(app)
-	shellUtils.StartPrecess(newExePath, app)
+	shellUtils.KillProcess(app)
+	shellUtils.StartProcess(newExePath, app)
 
 	log.Println(i118Utils.I118Prt.Sprintf("success_upgrade", oldVersion, newVersion))
 
