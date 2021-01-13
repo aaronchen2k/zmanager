@@ -68,12 +68,12 @@
       "translation": "Valid actions: %q."
     },
     {
-      "id": "run_in_terminal",
-      "translation": "ZManager在终端中运行。"
+      "id": "launch_in_terminal",
+      "translation": "ZManager在终端中启动。"
     },
     {
-      "id": "run_in_service",
-      "translation": "ZManager在系统服务中运行。"
+      "id": "launch_in_service",
+      "translation": "ZManager在系统服务中启动。"
     },
     {
       "id": "running",

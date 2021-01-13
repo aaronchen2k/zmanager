@@ -69,12 +69,12 @@
       "translation": "Valid actions: %q."
     },
     {
-      "id": "run_in_terminal",
-      "translation": "ZManager run in terminal."
+      "id": "launch_in_terminal",
+      "translation": "Launched from terminal."
     },
     {
-      "id": "run_in_service",
-      "translation": "ZManager run as service."
+      "id": "launch_in_service",
+      "translation": "Launched from system service."
     },
     {
       "id": "running",

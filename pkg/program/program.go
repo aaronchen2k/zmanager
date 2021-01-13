@@ -20,9 +20,9 @@ var Logger service.Logger
 
 func (p *Program) Start(s service.Service) error {
 	if service.Interactive() {
-		Logger.Info(i118Utils.I118Prt.Sprintf("run_in_terminal"))
+		Logger.Info(i118Utils.I118Prt.Sprintf("launch_in_terminal"))
 	} else {
-		Logger.Info(i118Utils.I118Prt.Sprintf("run_in_service"))
+		Logger.Info(i118Utils.I118Prt.Sprintf("launch_in_service"))
 	}
 	p.exit = make(chan struct{})
 
