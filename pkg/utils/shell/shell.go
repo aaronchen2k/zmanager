@@ -116,20 +116,20 @@ func StartPrecess(execPath string, app string) (string, error) {
 	var cmd *exec.Cmd
 	if commonUtils.IsWin() {
 		if app == constant.ZTF {
-			tmpl = `start %s -%s %d > %snohup.%s.log 2>&1`
+			tmpl = `start cmd /c %s -%s %d ^> %snohup.%s.log`
 			cmdStr = fmt.Sprintf(tmpl, execPath, portTag, portNum, vari.WorkDir, app)
 		} else if app == constant.ZenData { // set root for workdir
-			tmpl = `start %s -R %s -%s %d > %snohup.%s.log 2>&1`
+			tmpl = `start cmd /c %s -R %s -%s %d ^> %snohup.%s.log`
 			cmdStr = fmt.Sprintf(tmpl, execPath, execDir, portTag, portNum, vari.WorkDir, app)
 		}
 
 		cmd = exec.Command("cmd", "/C", cmdStr)
+		/*
+			log := filepath.Join(vari.WorkDir, "nohup."+app+".log")
+			f, _ := os.Create(log)
 
-		//log := filepath.Join(vari.WorkDir, "nohup."+app+".log")
-		//f, _ := os.Create(log)
-		//
-		//cmd.Stdout = f
-		//cmd.Stderr = f
+			cmd.Stdout = f
+			cmd.Stderr = f*/
 
 	} else {
 		if app == constant.ZTF {
