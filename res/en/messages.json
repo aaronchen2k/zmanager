@@ -70,11 +70,11 @@
     },
     {
       "id": "run_in_terminal",
-      "translation": "zmanager run in terminal."
+      "translation": "ZManager run in terminal."
     },
     {
       "id": "run_in_service",
-      "translation": "zmanager run as service."
+      "translation": "ZManager run as service."
     },
     {
       "id": "running",
@@ -86,7 +86,7 @@
     },
     {
       "id": "start_to_run",
-      "translation": "start to run."
+      "translation": "Start to run scheduled job."
     }
   ]
 }

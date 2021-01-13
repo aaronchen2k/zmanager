@@ -69,11 +69,11 @@
     },
     {
       "id": "run_in_terminal",
-      "translation": "zmanager在终端中运行。"
+      "translation": "ZManager在终端中运行。"
     },
     {
       "id": "run_in_service",
-      "translation": "zmanager在系统服务中运行。"
+      "translation": "ZManager在系统服务中运行。"
     },
     {
       "id": "running",
@@ -85,7 +85,7 @@
     },
     {
       "id": "start_to_run",
-      "translation": "开始执行。"
+      "translation": "执行定时任务。"
     }
   ]
 }
