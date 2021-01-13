@@ -116,10 +116,10 @@ func StartPrecess(execPath string, app string) (string, error) {
 	var cmd *exec.Cmd
 	if commonUtils.IsWin() {
 		if app == constant.ZTF {
-			tmpl = `start cmd /c %s -%s %d ^> %snohup.%s.log`
+			tmpl = `start cmd /c %s -%s %d ^1^> %snohup.%s.log ^2^>^&^1`
 			cmdStr = fmt.Sprintf(tmpl, execPath, portTag, portNum, vari.WorkDir, app)
 		} else if app == constant.ZenData { // set root for workdir
-			tmpl = `start cmd /c %s -R %s -%s %d ^> %snohup.%s.log`
+			tmpl = `start cmd /c %s -R %s -%s %d ^1^> %snohup.%s.log ^2^>^&^1`
 			cmdStr = fmt.Sprintf(tmpl, execPath, execDir, portTag, portNum, vari.WorkDir, app)
 		}
 
@@ -129,7 +129,8 @@ func StartPrecess(execPath string, app string) (string, error) {
 			f, _ := os.Create(log)
 
 			cmd.Stdout = f
-			cmd.Stderr = f*/
+			cmd.Stderr = f
+		*/
 
 	} else {
 		if app == constant.ZTF {
