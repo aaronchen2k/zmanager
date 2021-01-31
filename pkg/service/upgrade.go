@@ -59,9 +59,9 @@ func downloadApp(app string, version string) (pass bool, err error) {
 	}
 	url := fmt.Sprintf(constant.PackageDownloadURL, app, version, os, app)
 
-	extractDir := appDir + version
+	extractDir := appDir + "latest"
+	pth := appDir + version + ".zip"
 
-	pth := extractDir + ".zip"
 	err = downloadUtils.Download(url, pth)
 	if err != nil {
 		return
@@ -97,7 +97,8 @@ func downloadApp(app string, version string) (pass bool, err error) {
 func restartApp(app string, newVersion string) (err error) {
 	appDir := vari.WorkDir + app + constant.PthSep
 
-	newExePath := appDir + newVersion + constant.PthSep + app + constant.PthSep + app
+	newExeDir := appDir + "latest" + constant.PthSep + app
+	newExePath := newExeDir + constant.PthSep + app
 	if commonUtils.IsWin() {
 		newExePath += ".exe"
 	}
