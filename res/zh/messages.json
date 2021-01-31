@@ -6,6 +6,10 @@
       "translation": "帮助："
     },
     {
+      "id": "current_config",
+      "translation": "当前配置："
+    },
+    {
       "id": "begin_config",
       "translation": "开始配置, 输入'exit'退出。"
     },
@@ -64,8 +68,8 @@
     },
 
     {
-      "id": "valid_actions",
-      "translation": "Valid actions: %q."
+      "id": "invalid_actions",
+      "translation": "无效的动作%s在%q中。"
     },
     {
       "id": "launch_in_terminal",

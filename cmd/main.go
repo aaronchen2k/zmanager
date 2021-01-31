@@ -1,26 +1,34 @@
 package main
 
 import (
+	"flag"
 	configUtils "github.com/easysoft/zmanager/pkg/config"
 	"github.com/easysoft/zmanager/pkg/program"
 	commonUtils "github.com/easysoft/zmanager/pkg/utils/common"
 	constant "github.com/easysoft/zmanager/pkg/utils/const"
 	i118Utils "github.com/easysoft/zmanager/pkg/utils/i118"
+	"github.com/easysoft/zmanager/pkg/utils/vari"
 	"github.com/kardianos/service"
 	"log"
 	"os"
 )
 
+var (
+	flagSet *flag.FlagSet
+	action  string
+)
+
 func main() {
+	flagSet = flag.NewFlagSet("zmanager", flag.ContinueOnError)
+	flagSet.StringVar(&action, "a", "", "")
+	flagSet.StringVar(&vari.Language, "l", "", "")
+	flagSet.Parse(os.Args[1:])
+
 	configUtils.Init()
 
-	action := ""
-	if len(os.Args) > 1 {
-		action = os.Args[1]
-	}
-
-	if action != "" && commonUtils.StrInArr(action, constant.Actions) {
-		log.Printf("Valid actions: %q\n", constant.Actions)
+	if action != "" && !commonUtils.StrInArr(action, constant.Actions) {
+		log.Println(i118Utils.I118Prt.Sprintf("invalid_actions", action, service.ControlAction))
+		return
 	}
 
 	options := make(service.KeyValue)

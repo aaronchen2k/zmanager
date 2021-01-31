@@ -25,6 +25,7 @@ func Init() {
 	vari.Config = getInst()
 
 	i118Utils.InitI118(vari.Config.Language)
+	PrintCurrConfig()
 }
 
 func SaveConfig(conf model.Config) error {
@@ -99,26 +100,29 @@ func InputForSet() {
 
 	//logUtils.PrintToWithColor(i118Utils.I118Prt.Sprintf("begin_config"), color.FgCyan)
 
-	enCheck := ""
-	var numb string
-	if conf.Language == "zh" {
-		enCheck = "*"
-		numb = "1"
-	}
-	zhCheck := ""
-	if conf.Language == "en" {
-		zhCheck = "*"
-		numb = "2"
-	}
-
-	// set lang
-	langNo := stdinUtils.GetInput("(1|2)", numb, "enter_language", enCheck, zhCheck)
-	if langNo == "1" {
-		conf.Language = "zh"
+	if vari.Language == "zh" || vari.Language == "en" {
+		conf.Language = vari.Language
 	} else {
-		conf.Language = "en"
+		enCheck := ""
+		var numb string
+		if conf.Language == "zh" {
+			enCheck = "*"
+			numb = "1"
+		}
+		zhCheck := ""
+		if conf.Language == "en" {
+			zhCheck = "*"
+			numb = "2"
+		}
+
+		// set lang
+		langNo := stdinUtils.GetInput("(1|2)", numb, "enter_language", enCheck, zhCheck)
+		if langNo == "1" {
+			conf.Language = "zh"
+		} else {
+			conf.Language = "en"
+		}
 	}
 
 	SaveConfig(conf)
-	PrintCurrConfig()
 }

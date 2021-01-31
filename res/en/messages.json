@@ -6,6 +6,10 @@
       "translation": "Usage:"
     },
     {
+      "id": "current_config",
+      "translation": "Current Config:"
+    },
+    {
       "id": "begin_config",
       "translation": "Begin to config, type 'exit' to quit."
     },
@@ -65,8 +69,8 @@
     },
 
     {
-      "id": "valid_actions",
-      "translation": "Valid actions: %q."
+      "id": "invalid_actions",
+      "translation": "Invalid action %s in %q."
     },
     {
       "id": "launch_in_terminal",
