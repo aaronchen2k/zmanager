@@ -10,7 +10,7 @@ type Config struct {
 
 func NewConfig() Config {
 	return Config{
-		Interval: 6,
+		Interval: 30,
 		Language: "en",
 	}
 }

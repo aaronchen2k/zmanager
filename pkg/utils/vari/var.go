@@ -12,7 +12,7 @@ var (
 	ConfigFile string
 	LogFile    string
 
-	Language string
-	StartZTF bool
-	StartZD  bool
+	Language        string
+	StartZTFService bool
+	StartZDService  bool
 )

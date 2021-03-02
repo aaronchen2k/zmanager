@@ -101,6 +101,11 @@ func KillProcess(app string) (string, error) {
 func StartProcess(execPath string, app string) (string, error) {
 	execDir := fileUtils.GetAbsolutePath(filepath.Dir(execPath))
 
+	if (app == constant.ZTF && !vari.StartZTFService) ||
+		(app == constant.ZenData && !vari.StartZDService) {
+		return "", nil
+	}
+
 	portTag := ""
 	portNum := 0
 	if app == constant.ZTF {
