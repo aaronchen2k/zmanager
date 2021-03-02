@@ -11,5 +11,8 @@ var (
 	WorkDir    string
 	ConfigFile string
 	LogFile    string
-	Language   string
+
+	Language string
+	StartZTF bool
+	StartZD  bool
 )

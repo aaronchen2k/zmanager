@@ -21,6 +21,8 @@ var (
 func main() {
 	flagSet = flag.NewFlagSet("zmanager", flag.ContinueOnError)
 	flagSet.StringVar(&action, "a", "", "")
+	flagSet.BoolVar(&vari.StartZTF, "ztf", false, "")
+	flagSet.BoolVar(&vari.StartZD, "zd", true, "")
 	flagSet.StringVar(&vari.Language, "l", "", "")
 	flagSet.Parse(os.Args[1:])
 
@@ -45,12 +47,12 @@ func main() {
 	}
 
 	prg := &program.Program{}
-	s, err := service.New(prg, config)
+	srv, err := service.New(prg, config)
 	if err != nil {
 		log.Fatal(err)
 	}
 	errs := make(chan error, 5)
-	program.Logger, err = s.Logger(errs)
+	program.Logger, err = srv.Logger(errs)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -65,7 +67,7 @@ func main() {
 	}()
 
 	if action != "" {
-		err := service.Control(s, action)
+		err := service.Control(srv, action)
 		if err != nil {
 			log.Println(i118Utils.I118Prt.Sprintf("valid_actions", service.ControlAction))
 			log.Fatal(err)
@@ -73,7 +75,7 @@ func main() {
 		return
 	}
 
-	err = s.Run()
+	err = srv.Run()
 	if err != nil {
 		program.Logger.Error(err)
 	}

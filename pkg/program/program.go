@@ -46,6 +46,11 @@ func (p *Program) run() error {
 			for _, app := range constant.Apps {
 				log.Printf("start to check %s.", app)
 
+				if (app == constant.ZTF && !vari.StartZTF) ||
+					(app == constant.ZenData && !vari.StartZD) {
+					continue
+				}
+
 				manageService.CheckUpgrade(app)
 				manageService.CheckStatus(app)
 			}
