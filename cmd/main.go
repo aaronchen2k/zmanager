@@ -19,20 +19,17 @@ var (
 	action  string
 
 	Logger service.Logger
-
-	startZTFService bool
-	startZDService  bool
 )
 
 func main() {
 	flagSet = flag.NewFlagSet("zmanager", flag.ContinueOnError)
 	flagSet.StringVar(&action, "a", "", "")
-	flagSet.BoolVar(&startZTFService, "ztf", false, "")
-	flagSet.BoolVar(&startZDService, "zd", true, "")
+	flagSet.BoolVar(&vari.StartZTFService, "ztf", false, "")
+	flagSet.BoolVar(&vari.StartZDService, "zd", true, "")
 	flagSet.StringVar(&vari.Language, "l", "", "")
 	flagSet.Parse(os.Args[1:])
 
-	log.Println(fmt.Sprintf("1. StartZTFService=%t, StartZDService=%t", startZTFService, startZDService))
+	log.Println(fmt.Sprintf("1. StartZTFService=%t, StartZDService=%t", vari.StartZTFService, vari.StartZDService))
 
 	configUtils.Init()
 
@@ -54,7 +51,7 @@ func main() {
 		Option: options,
 	}
 
-	prg := &program.Program{StartZTFService: startZTFService, StartZDService: startZDService}
+	prg := &program.Program{}
 	srv, err := service.New(prg, config)
 	if err != nil {
 		log.Fatal(err)

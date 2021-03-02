@@ -15,9 +15,6 @@ import (
 
 type Program struct {
 	exit chan struct{}
-
-	StartZTFService bool
-	StartZDService  bool
 }
 
 var Logger service.Logger
@@ -49,10 +46,10 @@ func (p *Program) run() error {
 
 			for _, app := range constant.Apps {
 				log.Println(i118Utils.I118Prt.Sprintf("start_to_check", app))
-				needToStartService := (app == constant.ZTF && p.StartZTFService) || (app == constant.ZD && p.StartZDService)
+				needToStartService := (app == constant.ZTF && vari.StartZTFService) || (app == constant.ZD && vari.StartZDService)
 
 				log.Println(fmt.Sprintf("2. StartZTFService=%t, StartZDService=%t, needToStartService=%t",
-					p.StartZTFService, p.StartZDService, needToStartService))
+					vari.StartZTFService, vari.StartZDService, needToStartService))
 
 				manageService.CheckUpgrade(app, needToStartService)
 				if needToStartService {
