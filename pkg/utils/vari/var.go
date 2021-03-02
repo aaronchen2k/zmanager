@@ -12,7 +12,5 @@ var (
 	ConfigFile string
 	LogFile    string
 
-	Language        string
-	StartZTFService = true
-	StartZDService  = true
+	Language string
 )

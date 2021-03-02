@@ -1,18 +1,23 @@
 package program
 
 import (
+	"fmt"
 	manageService "github.com/easysoft/zmanager/pkg/service"
 	constant "github.com/easysoft/zmanager/pkg/utils/const"
 	i118Utils "github.com/easysoft/zmanager/pkg/utils/i118"
 	logUtils "github.com/easysoft/zmanager/pkg/utils/log"
 	"github.com/easysoft/zmanager/pkg/utils/vari"
 	"github.com/kardianos/service"
+	"log"
 	"os"
 	"time"
 )
 
 type Program struct {
 	exit chan struct{}
+
+	StartZTFService bool
+	StartZDService  bool
 }
 
 var Logger service.Logger
@@ -34,19 +39,25 @@ func (p *Program) run() error {
 	defer file.Close()
 	logUtils.Init(file)
 
-	Logger.Warningf(i118Utils.I118Prt.Sprintf("running", service.Platform()))
+	log.Println(i118Utils.I118Prt.Sprintf("running", service.Platform()))
 	ticker := time.NewTicker(time.Duration(vari.Config.Interval) * time.Second)
 	for {
 		select {
 		case tm := <-ticker.C:
 			_ = tm
-			Logger.Warningf(i118Utils.I118Prt.Sprintf("start_to_run"))
+			log.Println(i118Utils.I118Prt.Sprintf("start_to_run"))
 
 			for _, app := range constant.Apps {
-				Logger.Warningf(i118Utils.I118Prt.Sprintf("start_to_check", app))
+				log.Println(i118Utils.I118Prt.Sprintf("start_to_check", app))
+				needToStartService := (app == constant.ZTF && p.StartZTFService) || (app == constant.ZD && p.StartZDService)
 
-				manageService.CheckUpgrade(app)
-				manageService.CheckStatus(app)
+				log.Println(fmt.Sprintf("2. StartZTFService=%t, StartZDService=%t, needToStartService=%t",
+					p.StartZTFService, p.StartZDService, needToStartService))
+
+				manageService.CheckUpgrade(app, needToStartService)
+				if needToStartService {
+					manageService.CheckStatus(app)
+				}
 			}
 
 		case <-p.exit:

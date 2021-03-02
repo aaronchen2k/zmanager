@@ -30,7 +30,7 @@ var (
 	VersionDownloadURL = QiNiuURL + "%s/version.txt"
 	PackageDownloadURL = QiNiuURL + "%s/%s/%s/%s.zip"
 
-	ZTF     = "ztf"
-	ZenData = "zd"
-	Apps    = []string{ZTF, ZenData}
+	ZTF  = "ztf"
+	ZD   = "zd"
+	Apps = []string{ZTF, ZD}
 )

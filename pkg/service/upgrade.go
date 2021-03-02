@@ -17,7 +17,7 @@ import (
 	"strings"
 )
 
-func CheckUpgrade(app string) {
+func CheckUpgrade(app string, startService bool) {
 	appDir := vari.WorkDir + app + constant.PthSep
 	fileUtils.MkDirIfNeeded(appDir)
 
@@ -33,7 +33,7 @@ func CheckUpgrade(app string) {
 	if app == constant.ZTF {
 		oldVersionStr := convertVersion(vari.Config.ZTFVersion)
 		oldVersionNum, _ = strconv.ParseFloat(oldVersionStr, 64)
-	} else if app == constant.ZenData {
+	} else if app == constant.ZD {
 		oldVersionStr := convertVersion(vari.Config.ZDVersion)
 		oldVersionNum, _ = strconv.ParseFloat(oldVersionStr, 64)
 	}
@@ -43,7 +43,19 @@ func CheckUpgrade(app string) {
 
 		pass, err := downloadApp(app, content)
 		if pass && err == nil {
-			restartApp(app, content)
+			restartApp(app, startService)
+
+			// update config file
+			var oldVersion string
+			if app == constant.ZTF {
+				oldVersion = vari.Config.ZTFVersion
+				vari.Config.ZTFVersion = content
+			} else if app == constant.ZD {
+				oldVersion = vari.Config.ZDVersion
+				vari.Config.ZDVersion = content
+			}
+			configUtils.SaveConfig(vari.Config)
+			log.Println(i118Utils.I118Prt.Sprintf("success_upgrade", oldVersion, content))
 		}
 	} else {
 		log.Println(i118Utils.I118Prt.Sprintf("no_need_to_upgrade", content))
@@ -94,7 +106,7 @@ func downloadApp(app string, version string) (pass bool, err error) {
 	return
 }
 
-func restartApp(app string, newVersion string) (err error) {
+func restartApp(app string, startService bool) (err error) {
 	appDir := vari.WorkDir + app + constant.PthSep
 
 	newExeDir := appDir + "latest" + constant.PthSep + app
@@ -103,22 +115,10 @@ func restartApp(app string, newVersion string) (err error) {
 		newExePath += ".exe"
 	}
 
-	var oldVersion string
-	if app == constant.ZTF {
-		oldVersion = vari.Config.ZTFVersion
-		vari.Config.ZTFVersion = newVersion
-	} else if app == constant.ZenData {
-		oldVersion = vari.Config.ZDVersion
-		vari.Config.ZDVersion = newVersion
-	}
-
 	shellUtils.KillProcess(app)
-	shellUtils.StartProcess(newExePath, app)
-
-	log.Println(i118Utils.I118Prt.Sprintf("success_upgrade", oldVersion, newVersion))
-
-	// update config file
-	configUtils.SaveConfig(vari.Config)
+	if startService {
+		shellUtils.StartProcess(newExePath, app)
+	}
 
 	return
 }

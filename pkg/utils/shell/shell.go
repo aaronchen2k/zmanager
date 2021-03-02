@@ -102,17 +102,12 @@ func KillProcess(app string) (string, error) {
 func StartProcess(execPath string, app string) (string, error) {
 	execDir := fileUtils.GetAbsolutePath(filepath.Dir(execPath))
 
-	if (app == constant.ZTF && !vari.StartZTFService) ||
-		(app == constant.ZenData && !vari.StartZDService) {
-		return "", nil
-	}
-
 	portTag := ""
 	portNum := 0
 	if app == constant.ZTF {
 		portTag = "P"
 		portNum = 8848
-	} else if app == constant.ZenData {
+	} else if app == constant.ZD {
 		portTag = "p"
 		portNum = 8849
 	}
@@ -124,7 +119,7 @@ func StartProcess(execPath string, app string) (string, error) {
 		if app == constant.ZTF {
 			tmpl = `start cmd /c %s -%s %d ^1^> %snohup.%s.log ^2^>^&^1`
 			cmdStr = fmt.Sprintf(tmpl, execPath, portTag, portNum, vari.WorkDir, app)
-		} else if app == constant.ZenData { // set root for workdir
+		} else if app == constant.ZD { // set root for workdir
 			tmpl = `start cmd /c %s -R %s -%s %d ^1^> %snohup.%s.log ^2^>^&^1`
 			cmdStr = fmt.Sprintf(tmpl, execPath, execDir, portTag, portNum, vari.WorkDir, app)
 		}
@@ -134,7 +129,7 @@ func StartProcess(execPath string, app string) (string, error) {
 	} else {
 		if app == constant.ZTF {
 			cmd = exec.Command("nohup", execPath, "-"+portTag, strconv.Itoa(portNum))
-		} else if app == constant.ZenData { // set root for workdir
+		} else if app == constant.ZD { // set root for workdir
 			cmd = exec.Command("nohup", execPath, "-R", execDir, "-"+portTag, strconv.Itoa(portNum))
 		}
 

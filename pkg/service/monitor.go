@@ -17,20 +17,13 @@ func CheckStatus(app string) {
 		return
 	}
 
-	version := ""
-	if app == constant.ZTF {
-		version = vari.Config.ZTFVersion
-	} else if app == constant.ZenData {
-		version = vari.Config.ZDVersion
-	}
-
-	startApp(app, version)
+	startApp(app)
 }
 
-func startApp(app string, version string) (err error) {
+func startApp(app string) (err error) {
 	appDir := vari.WorkDir + app + constant.PthSep
 
-	newExePath := appDir + version + constant.PthSep + app + constant.PthSep + app
+	newExePath := appDir + "latest" + constant.PthSep + app + constant.PthSep + app
 	if commonUtils.IsWin() {
 		newExePath += ".exe"
 	}

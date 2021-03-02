@@ -8,6 +8,7 @@ import (
 	commonUtils "github.com/easysoft/zmanager/pkg/utils/common"
 	constant "github.com/easysoft/zmanager/pkg/utils/const"
 	i118Utils "github.com/easysoft/zmanager/pkg/utils/i118"
+	logUtils "github.com/easysoft/zmanager/pkg/utils/log"
 	"github.com/easysoft/zmanager/pkg/utils/vari"
 	"github.com/kardianos/service"
 	"log"
@@ -17,18 +18,26 @@ import (
 var (
 	flagSet *flag.FlagSet
 	action  string
+
+	Logger service.Logger
+
+	startZTFService bool
+	startZDService  bool
 )
 
 func main() {
+	file, _ := os.OpenFile(vari.LogFile, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	defer file.Close()
+	logUtils.Init(file)
+
 	flagSet = flag.NewFlagSet("zmanager", flag.ContinueOnError)
 	flagSet.StringVar(&action, "a", "", "")
-	flagSet.BoolVar(&vari.StartZTFService, "ztf", false, "")
-	flagSet.BoolVar(&vari.StartZDService, "zd", true, "")
+	flagSet.BoolVar(&startZTFService, "ztf", false, "")
+	flagSet.BoolVar(&startZDService, "zd", true, "")
 	flagSet.StringVar(&vari.Language, "l", "", "")
 	flagSet.Parse(os.Args[1:])
 
-	log.Println(fmt.Sprintf("StartZTFService=%t, StartZDService=%t",
-		vari.StartZTFService, vari.StartZDService))
+	log.Println(fmt.Sprintf("1. StartZTFService=%t, StartZDService=%t", startZDService, startZDService))
 
 	configUtils.Init()
 
@@ -50,7 +59,7 @@ func main() {
 		Option: options,
 	}
 
-	prg := &program.Program{}
+	prg := &program.Program{StartZTFService: startZTFService, StartZDService: startZDService}
 	srv, err := service.New(prg, config)
 	if err != nil {
 		log.Fatal(err)
