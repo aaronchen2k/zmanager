@@ -90,6 +90,10 @@
     {
       "id": "start_to_run",
       "translation": "执行定时任务。"
+    },
+    {
+      "id": "start_to_check",
+      "translation": "开始检测程序%s。"
     }
   ]
 }

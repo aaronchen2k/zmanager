@@ -91,6 +91,10 @@
     {
       "id": "start_to_run",
       "translation": "Start to run scheduled job."
+    },
+    {
+      "id": "start_to_check",
+      "translation": "Start to check %s."
     }
   ]
 }

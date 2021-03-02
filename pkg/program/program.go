@@ -44,7 +44,7 @@ func (p *Program) run() error {
 			Logger.Warningf(i118Utils.I118Prt.Sprintf("start_to_run"))
 
 			for _, app := range constant.Apps {
-				log.Printf("start to check %s.", app)
+				log.Println(i118Utils.I118Prt.Sprintf("start_to_check", app))
 
 				if (app == constant.ZTF && !vari.StartZTF) ||
 					(app == constant.ZenData && !vari.StartZD) {
