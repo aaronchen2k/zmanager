@@ -8,7 +8,6 @@ import (
 	commonUtils "github.com/easysoft/zmanager/pkg/utils/common"
 	constant "github.com/easysoft/zmanager/pkg/utils/const"
 	i118Utils "github.com/easysoft/zmanager/pkg/utils/i118"
-	logUtils "github.com/easysoft/zmanager/pkg/utils/log"
 	"github.com/easysoft/zmanager/pkg/utils/vari"
 	"github.com/kardianos/service"
 	"log"
@@ -26,10 +25,6 @@ var (
 )
 
 func main() {
-	file, _ := os.OpenFile(vari.LogFile, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
-	defer file.Close()
-	logUtils.Init(file)
-
 	flagSet = flag.NewFlagSet("zmanager", flag.ContinueOnError)
 	flagSet.StringVar(&action, "a", "", "")
 	flagSet.BoolVar(&startZTFService, "ztf", false, "")
@@ -37,7 +32,7 @@ func main() {
 	flagSet.StringVar(&vari.Language, "l", "", "")
 	flagSet.Parse(os.Args[1:])
 
-	log.Println(fmt.Sprintf("1. StartZTFService=%t, StartZDService=%t", startZDService, startZDService))
+	log.Println(fmt.Sprintf("1. StartZTFService=%t, StartZDService=%t", startZTFService, startZDService))
 
 	configUtils.Init()
 
@@ -82,7 +77,7 @@ func main() {
 	if action != "" {
 		err := service.Control(srv, action)
 		if err != nil {
-			log.Println(i118Utils.I118Prt.Sprintf("valid_actions", service.ControlAction))
+			log.Println(i118Utils.I118Prt.Sprintf("invalid_actions", action, service.ControlAction))
 			log.Fatal(err)
 		}
 		return
