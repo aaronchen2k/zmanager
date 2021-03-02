@@ -24,7 +24,7 @@ var (
 func main() {
 	flagSet = flag.NewFlagSet("zmanager", flag.ContinueOnError)
 	flagSet.StringVar(&action, "a", "", "")
-	flagSet.BoolVar(&vari.StartZTFService, "ztf", false, "")
+	flagSet.BoolVar(&vari.StartZTFService, "ztf", true, "")
 	flagSet.BoolVar(&vari.StartZDService, "zd", true, "")
 	flagSet.StringVar(&vari.Language, "l", "", "")
 	flagSet.Parse(os.Args[1:])
