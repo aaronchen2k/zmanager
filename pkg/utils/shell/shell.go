@@ -83,8 +83,8 @@ func KillProcess(app string) (string, error) {
 
 		cmd = exec.Command("cmd", "/C", cmdStr)
 	} else {
-		tmpl = `ps -ef | grep "%s" | grep -v "grep" | awk '{print $2}' | xargs kill -9`
-		cmdStr = fmt.Sprintf(tmpl, app)
+		tmpl = `ps -ef | grep "%s" | grep -v "--%s" | grep -v "grep" | awk '{print $2}' | xargs kill -9`
+		cmdStr = fmt.Sprintf(tmpl, app, app)
 
 		cmd = exec.Command("/bin/bash", "-c", cmdStr)
 	}
