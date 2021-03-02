@@ -7,6 +7,7 @@ import (
 	constant "github.com/easysoft/zmanager/pkg/utils/const"
 	fileUtils "github.com/easysoft/zmanager/pkg/utils/file"
 	"github.com/easysoft/zmanager/pkg/utils/vari"
+	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -144,6 +145,7 @@ func StartProcess(execPath string, app string) (string, error) {
 		cmd.Stderr = f
 	}
 
+	log.Println("Exec cmd " + cmd.String())
 	cmd.Dir = execDir
 	err := cmd.Start()
 	return "", err

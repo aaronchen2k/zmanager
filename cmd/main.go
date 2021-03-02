@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	configUtils "github.com/easysoft/zmanager/pkg/config"
 	"github.com/easysoft/zmanager/pkg/program"
 	commonUtils "github.com/easysoft/zmanager/pkg/utils/common"
@@ -25,6 +26,9 @@ func main() {
 	flagSet.BoolVar(&vari.StartZDService, "zd", true, "")
 	flagSet.StringVar(&vari.Language, "l", "", "")
 	flagSet.Parse(os.Args[1:])
+
+	log.Println(fmt.Sprintf("StartZTFService=%t, StartZDService=%t",
+		vari.StartZTFService, vari.StartZDService))
 
 	configUtils.Init()
 

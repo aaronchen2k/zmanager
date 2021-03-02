@@ -13,6 +13,6 @@ var (
 	LogFile    string
 
 	Language        string
-	StartZTFService bool
-	StartZDService  bool
+	StartZTFService = true
+	StartZDService  = true
 )

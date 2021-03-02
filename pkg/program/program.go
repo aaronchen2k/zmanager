@@ -7,7 +7,6 @@ import (
 	logUtils "github.com/easysoft/zmanager/pkg/utils/log"
 	"github.com/easysoft/zmanager/pkg/utils/vari"
 	"github.com/kardianos/service"
-	"log"
 	"os"
 	"time"
 )
@@ -44,7 +43,7 @@ func (p *Program) run() error {
 			Logger.Warningf(i118Utils.I118Prt.Sprintf("start_to_run"))
 
 			for _, app := range constant.Apps {
-				log.Println(i118Utils.I118Prt.Sprintf("start_to_check", app))
+				Logger.Warningf(i118Utils.I118Prt.Sprintf("start_to_check", app))
 
 				manageService.CheckUpgrade(app)
 				manageService.CheckStatus(app)

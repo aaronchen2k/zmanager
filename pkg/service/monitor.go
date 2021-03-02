@@ -5,6 +5,7 @@ import (
 	constant "github.com/easysoft/zmanager/pkg/utils/const"
 	shellUtils "github.com/easysoft/zmanager/pkg/utils/shell"
 	"github.com/easysoft/zmanager/pkg/utils/vari"
+	"log"
 	"strings"
 )
 
@@ -34,6 +35,7 @@ func startApp(app string, version string) (err error) {
 		newExePath += ".exe"
 	}
 
+	log.Println("Before StartProcess " + newExePath)
 	shellUtils.StartProcess(newExePath, app)
 
 	return
